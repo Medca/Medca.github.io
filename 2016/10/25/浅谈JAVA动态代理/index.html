@@ -11,10 +11,17 @@
 <meta property="og:url" content="http://yoursite.com/2016/10/25/浅谈JAVA动态代理/index.html">
 <meta property="og:site_name" content="E学">
 <meta property="og:description" content="在学习Spring的时候，我们知道Spring主要有两大思想，一个是IoC，另一个就是AOP。">
-<meta property="og:updated_time" content="2016-10-25T06:07:59.508Z">
+<meta property="og:image" content="http://yoursite.com/1.png">
+<meta property="og:image" content="http://yoursite.com/2.png">
+<meta property="og:image" content="http://yoursite.com/3.png">
+<meta property="og:image" content="http://yoursite.com/3.2.png">
+<meta property="og:image" content="http://yoursite.com/4.png">
+<meta property="og:image" content="http://yoursite.com/5.png">
+<meta property="og:updated_time" content="2016-10-25T08:59:33.906Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="浅谈JAVA动态代理">
 <meta name="twitter:description" content="在学习Spring的时候，我们知道Spring主要有两大思想，一个是IoC，另一个就是AOP。">
+<meta name="twitter:image" content="http://yoursite.com/1.png">
   
     <link rel="alternate" href="/atom.xml" title="E学" type="application/atom+xml">
   
@@ -86,11 +93,23 @@
     <div class="article-entry" itemprop="articleBody">
       
         <script src="/assets/js/DPlayer.min.js"> </script><script src="/assets/js/APlayer.min.js"> </script><p>在学习Spring的时候，我们知道Spring主要有两大思想，一个是IoC，另一个就是AOP。<br><a id="more"></a><br>对于IoC，依赖注入就不用多说了，而对于Spring的核心AOP来说，我们不但要知道怎么通过AOP来满足的我们的功能，我们更需要学习的是其底层是怎么样的一个原理，而AOP的原理就是java的动态代理机制，所以本篇就是对java的动态机制进行一个回顾。<br><div id="aplayer0" class="aplayer" style="margin-bottom: 20px;"></div><script>var aplayer0 = new APlayer({element: document.getElementById("aplayer0"),narrow: false,autoplay: false,showlrc: 0,music : {title: "当蝴离开了蝶",author: "庄心妍",url: "01.mp3",pic: ""}});aplayer0.init();</script></p>
+<p>在java的动态代理机制中，有两个重要的类或接口，一个是 InvocationHandler(Interface)、另一个则是 Proxy(Class)，这一个类和接口是实现我们动态代理所必须用到的。</p>
+<p>每一个动态代理类都必须要实现InvocationHandler这个接口，并且每个代理类的实例都关联到了一个handler，当我们通过代理对象调用一个方法的时候，这个方法的调用就会被转发为由InvocationHandler这个接口的 invoke 方法来进行调用。</p>
+<p>接下来我们来看看Proxy这个类：<br>Proxy这个类的作用就是用来动态创建一个代理对象的类，它提供了许多的方法，但是我们用的最多的就是 newProxyInstance 这个方法</p>
+<p>好了，在介绍完这两个接口(类)以后，我们来通过一个实例来看看我们的动态代理模式是什么样的：</p>
+<p>首先我们定义了一个Rent类型的接口，为其声明了两个方法：<br><img src="1.png" alt=""></p>
+<p>接着，定义了一个类来实现这个接口，这个类就是我们的真实对象，Host类:<br><img src="2.png" alt=""></p>
+<p>下一步，我们就要定义一个动态代理类了，前面说了，每一个动态代理类都必须要实现 InvocationHandler 这个接口，因此我们这个动态代理类也不例外：<br><img src="3.png" alt=""><br><img src="3.2.png" alt=""></p>
+<p>最后，来看看我们的Client类：<br><img src="4.png" alt=""></p>
+<p>我们先来看看控制台的输出：<br><img src="5.png" alt=""></p>
+<p>我们看到，在真正通过代理对象来调用真实对象的方法的时候，我们可以在该方法前后添加自己的一些操作</p>
+<p>这也就证明了当我通过代理对象来调用方法的时候，起实际就是委托由其关联到的 handler 对象的invoke方法中来调用，并不是自己来真实调用，而是通过代理的方式来调用的。</p>
+<p>这就是我们的java动态代理机制</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/10/25/浅谈JAVA动态代理/" data-id="ciuoxuss00001rsu7no3nlk48" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/10/25/浅谈JAVA动态代理/" data-id="ciup9hxq400004ou7ylwofpu7" class="article-share-link">Share</a>
       
       
     </footer>
