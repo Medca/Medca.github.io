@@ -86,25 +86,16 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <script src="/assets/js/DPlayer.min.js"> </script><script src="/assets/js/APlayer.min.js"> </script><a id="more"></a>
-<h4 id="定义："><a href="#定义：" class="headerlink" title="定义："></a>定义：</h4><p>即时函数是该函数加载完就会立即被执行，而不是等待页面加载完之后才执行即时函数，这和window.onload()和$(function(){})都是有区别的，所以即时函数是不能替代以上两者的。<br><div id="aplayer2" class="aplayer" style="margin-bottom: 20px;"></div><script>var aplayer2 = new APlayer({element: document.getElementById("aplayer2"),narrow: false,autoplay: false,showlrc: 0,music : {title: "走着走着就散了",author: "庄心妍",url: "庄心妍 - 走着走着就散了.mp3",pic: ""}});aplayer2.init();</script></p>
-<h4 id="即时函数的使用："><a href="#即时函数的使用：" class="headerlink" title="即时函数的使用："></a>即时函数的使用：</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> btn = <span class="built_in">document</span>.getElementById(<span class="string">"btn"</span>);</div><div class="line">btn.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">	<span class="built_in">console</span>.log(<span class="string">"hello"</span>)</div><div class="line">&#125;;</div><div class="line"></div><div class="line">(<span class="function"><span class="keyword">function</span>(<span class="params">i</span>)</span>&#123;</div><div class="line">	<span class="built_in">console</span>.log(<span class="string">"======"</span>+i);</div><div class="line">&#125;)(<span class="string">"dosomething"</span>)</div></pre></td></tr></table></figure>
-<p>访问页面时，即时函数会自动执行，打开控制台显示：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">======dosomething</div></pre></td></tr></table></figure></p>
-<p>点击按钮时，控制台才会打印”hello”:<br><img src="http://ofl0flipo.bkt.clouddn.com/zfun-1.png" alt=""></p>
-<h4 id="一个分号引发的错误。。。"><a href="#一个分号引发的错误。。。" class="headerlink" title="一个分号引发的错误。。。"></a>一个分号引发的错误。。。</h4><p><img src="http://ofl0flipo.bkt.clouddn.com/zfun-2.png" alt=""><br><img src="http://ofl0flipo.bkt.clouddn.com/zfun-2-2.png" alt=""></p>
-<p>“hello”在不点击的情况下会自动执行，并报错，为什么呢？</p>
-<p>因为少了分号，此时即时函数的匿名函数会当成onclick的函数的一个参数：<br><img src="http://ofl0flipo.bkt.clouddn.com/zfun-3.png" alt=""></p>
-<p>若onclick的函数传入形参，则不会报错<br><img src="http://ofl0flipo.bkt.clouddn.com/zfun-3-2.png" alt=""></p>
-<h4 id="我们对即时函数做一些修改，这样没有分号也不会报错："><a href="#我们对即时函数做一些修改，这样没有分号也不会报错：" class="headerlink" title="我们对即时函数做一些修改，这样没有分号也不会报错："></a>我们对即时函数做一些修改，这样没有分号也不会报错：</h4><p><img src="http://ofl0flipo.bkt.clouddn.com/zfun-4.png" alt=""></p>
-<p>即;把即时函数的第一个括号去掉并加上”!+-*/“等运算符。因为加了运算符后，后面的函数会当成表达式执行，然后再接受后面传递的参数执行。</p>
-<p>这也是匿名函数的另外一种写法。</p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>即时函数是闭包的特殊例子，但是两者之间并没有必然的联系。</p>
-<p>即时函数是指定义完了立即调用的匿名函数，往往用它来开辟一个独立的作用域(命名空间)。<br>当然，如果在即时函数中定义的变量被内部函数捕获的话，那么这个即时函数就形成了一个闭包。</p>
-
+        <h4 id="定义："><a href="#定义：" class="headerlink" title="定义："></a>定义：</h4><p>即时函数是该函数加载完就会立即被执行，而不是等待页面加载完之后才执行即时函数，这和window.onload()和$(function(){})都是有区别的，所以即时函数是不能替代以上两者的。</p>
+        
+          <p class="article-more-link">
+            <a href="/2016/10/26/关于即时函数的一些知识/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/10/26/关于即时函数的一些知识/" data-id="ciuq91fec0002s8u7v6qx67hp" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/10/26/关于即时函数的一些知识/" data-id="ciuq92hfl0002rsu74mmrwydf" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -147,7 +138,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/10/25/浅谈JAVA动态代理/" data-id="ciuq91fez0004s8u7okzuqa3d" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/10/25/浅谈JAVA动态代理/" data-id="ciuq92hg70004rsu7k3cs62gs" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JAVA/">JAVA</a></li></ul>
@@ -190,7 +181,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/10/25/nvm实现nodejs版本控制/" data-id="ciuq91fdj0000s8u7kvojjw7n" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/10/25/nvm实现nodejs版本控制/" data-id="ciuq92hew0000rsu7kl9tbnkj" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
