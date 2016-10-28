@@ -85,7 +85,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <script src="/assets/js/DPlayer.min.js"> </script><script src="/assets/js/APlayer.min.js"> </script><p>在项目中需要使用Mybatis来实现关联查询。。。<br><a id="more"></a></p>
+        <script src="/assets/js/APlayer.min.js"> </script><script src="/assets/js/DPlayer.min.js"> </script><p>在项目中需要使用Mybatis来实现关联查询。。。<br><a id="more"></a></p>
 <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>1.现有teacher，student两张表，查询每一位老师的学生。<br>2.使用Mybatis实现。</p>
 <h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>1.student表中有teacher_id。<br>2.通过teacher的id和student表对应的teacher_id来关联查询。<br>3.经分析，使用的是一对多关联查询。</p>
 <h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><h3 id="分别写teacher-student的实体类，并在teacher实体类创建list集合的属性"><a href="#分别写teacher-student的实体类，并在teacher实体类创建list集合的属性" class="headerlink" title="分别写teacher,student的实体类，并在teacher实体类创建list集合的属性"></a>分别写teacher,student的实体类，并在teacher实体类创建list集合的属性</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> List&lt;Student&gt; students = <span class="keyword">new</span> ArrayList&lt;&gt;(<span class="number">0</span>);</div></pre></td></tr></table></figure>
@@ -96,7 +96,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/10/27/mybatis之多表查询/" data-id="ciut67twq0001x4u7i173eqnz" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/10/27/mybatis之多表查询/" data-id="ciut6ed4t0002ysu7qwz8epfs" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JAVA/">JAVA</a></li></ul>
@@ -106,15 +106,6 @@
   
     
 <nav id="article-nav">
-  
-    <a href="/2016/10/28/mybatis之多表查询-1/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          mybatis之多表查询
-        
-      </div>
-    </a>
   
   
     <a href="/2016/10/26/关于即时函数的一些知识/" id="article-nav-older" class="article-nav-link-wrap">
@@ -168,10 +159,6 @@
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
-        
-          <li>
-            <a href="/2016/10/28/mybatis之多表查询-1/">mybatis之多表查询</a>
-          </li>
         
           <li>
             <a href="/2016/10/27/mybatis之多表查询/">Mybatis之关联查询</a>
