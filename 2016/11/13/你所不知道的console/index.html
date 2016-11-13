@@ -19,7 +19,7 @@
 <meta property="og:image" content="http://ofl0flipo.bkt.clouddn.com/11136.png">
 <meta property="og:image" content="http://ofl0flipo.bkt.clouddn.com/11137.png">
 <meta property="og:image" content="http://ofl0flipo.bkt.clouddn.com/11138.png">
-<meta property="og:updated_time" content="2016-11-13T09:23:03.187Z">
+<meta property="og:updated_time" content="2016-11-13T09:26:50.190Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="你所不知道的console">
 <meta name="twitter:description" content="在网站开发中，我们难免会遇到各种bug，这时，我们就需要去调试我们的JavaScript脚本找出问题，然后去修改代码。那我们如何去调试呢？">
@@ -103,8 +103,9 @@
 <p>console.warn用于输出警示信息</p>
 <p>console.debug用于输出调试信息</p>
 <p>console对象的上面5种方法，都可以使用printf风格的占位符。不过，占位符的种类比较少，只支持字符（%s）、整数（%d或%i）、浮点数（%f）和对象（%o）四种。</p>
-<p>console.log(“%s年”,2016);<br>console.log(“%d年%d月”,2016,6);<br>console.log(“%f”,3.1415);<br>console.log(“%o”,json);</p>
-<p>如果你觉得上面的输出信息太单调了，我们还可以这样：<br>console.log(“%c自定义样式”,”font-size:20px;color:green”);<br>console.log(“%c我是%c自定义样式”,”font-size:20px;color:green”,”font-weight:bold;color:red”);<br><img src="http://ofl0flipo.bkt.clouddn.com/11133.png" alt=""></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(<span class="string">"%s年"</span>,<span class="number">2016</span>);</div><div class="line"><span class="built_in">console</span>.log(<span class="string">"%d年%d月"</span>,<span class="number">2016</span>,<span class="number">6</span>);</div><div class="line"><span class="built_in">console</span>.log(<span class="string">"%f"</span>,<span class="number">3.1415</span>);</div><div class="line"><span class="built_in">console</span>.log(<span class="string">"%o"</span>,json);</div></pre></td></tr></table></figure>
+<p>如果你觉得上面的输出信息太单调了，我们还可以这样：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(<span class="string">"%c自定义样式"</span>,<span class="string">"font-size:20px;color:green"</span>);</div><div class="line"><span class="built_in">console</span>.log(<span class="string">"%c我是%c自定义样式"</span>,<span class="string">"font-size:20px;color:green"</span>,<span class="string">"font-weight:bold;color:red"</span>);</div></pre></td></tr></table></figure></p>
+<p><img src="http://ofl0flipo.bkt.clouddn.com/11133.png" alt=""></p>
 <p>console.dirxml用来显示网页的某个节点（node）所包含的html/xml代码</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">thead</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">tr</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">th</span>&gt;</span><span class="tag">&lt;/<span class="name">th</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">th</span>&gt;</span><span class="tag">&lt;/<span class="name">th</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">th</span>&gt;</span><span class="tag">&lt;/<span class="name">th</span>&gt;</span></div><div class="line">		<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">thead</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></div><div class="line">	<span class="keyword">var</span> table=<span class="built_in">document</span>.querySelector(<span class="string">"table"</span>);</div><div class="line">	<span class="built_in">console</span>.dirxml(table);</div><div class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure>
 <p><img src="http://ofl0flipo.bkt.clouddn.com/11134.png" alt=""></p>
@@ -123,7 +124,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/11/13/你所不知道的console/" data-id="civgfpvs400064ou7ofkcqor9" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/11/13/你所不知道的console/" data-id="civgftl3w0006bwu7yyqnn5zv" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
