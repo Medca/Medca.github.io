@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>React入门实战 | E学</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="ReactJs入门教程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React入门实战">
+<meta property="og:url" content="http://yoursite.com/2016/11/16/React入门实战/index.html">
+<meta property="og:site_name" content="E学">
+<meta property="og:description" content="ReactJs入门教程">
+<meta property="og:image" content="http://ofl0flipo.bkt.clouddn.com/1116R01.jpg">
+<meta property="og:image" content="http://ofl0flipo.bkt.clouddn.com/1116R02.jpg">
+<meta property="og:updated_time" content="2016-11-16T11:13:30.475Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React入门实战">
+<meta name="twitter:description" content="ReactJs入门教程">
+<meta name="twitter:image" content="http://ofl0flipo.bkt.clouddn.com/1116R01.jpg">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">E学</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/atom.xml">rss</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-React入门实战" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/16/React入门实战/" class="article-date">
+  <time datetime="2016-11-16T06:09:32.000Z" itemprop="datePublished">2016-11-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      React入门实战
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="/assets/js/DPlayer.min.js"> </script><script src="/assets/js/APlayer.min.js"> </script><h1 id="ReactJs入门教程"><a href="#ReactJs入门教程" class="headerlink" title="ReactJs入门教程"></a>ReactJs入门教程</h1><a id="more"></a>
+<h2 id="ReactJS简介"><a href="#ReactJS简介" class="headerlink" title="ReactJS简介"></a>ReactJS简介</h2><p>React是由工作在Facebook的优秀程序员开发出来的用于开发用户交互界面的JS库，React带来了很多新的东西如组件化、JSX、虚拟DOM等。<br>其提供的虚拟DOM使得我们渲染组件呈现非常之快，让我们从频繁操作DOM的繁重工作之中解脱。<br>了解React的人都知道，它做的工作更多偏重于MVC中的V层，结合其它如Flux等一起，你可以非常容易构建强大的应用。</p>
+<h2 id="React主要的原理"><a href="#React主要的原理" class="headerlink" title="React主要的原理"></a>React主要的原理</h2><h3 id="Virtual-DOM-虚拟DOM"><a href="#Virtual-DOM-虚拟DOM" class="headerlink" title="Virtual DOM 虚拟DOM"></a>Virtual DOM 虚拟DOM</h3><p>传统的web应用，操作DOM一般是直接更新操作的，但是我们知道DOM更新通常是比较昂贵的。而React为了尽可能减少对DOM的操作，提供了一种不同的而又强大的方式来更新DOM，代替直接的DOM操作。就是Virtual DOM,一个轻量级的虚拟的DOM，就是React抽象出来的一个对象，描述dom应该什么样子的，应该如何呈现。通过这个Virtual DOM去更新真实的DOM，由这个Virtual DOM管理真实DOM的更新。</p>
+<p>为什么通过这多一层的Virtual DOM操作就能更快呢？ 这是因为React有个diff算法，更新Virtual DOM并不保证马上影响真实的DOM，React会等到事件循环结束，然后利用这个diff算法，通过当前新的dom表述与之前的作比较，计算出最小的步骤更新真实的DOM。</p>
+<h3 id="Components-组件"><a href="#Components-组件" class="headerlink" title="Components 组件"></a>Components 组件</h3><p>在DOM树上的节点被称为元素，在这里则不同，Virtual DOM上称为commponent。Virtual DOM的节点就是一个完整抽象的组件，它是由commponents组成。</p>
+<h2 id="使用React开发HelloWorld组件"><a href="#使用React开发HelloWorld组件" class="headerlink" title="使用React开发HelloWorld组件"></a>使用React开发HelloWorld组件</h2><h3 id="第一步：引入资源文件"><a href="#第一步：引入资源文件" class="headerlink" title="第一步：引入资源文件"></a>第一步：引入资源文件</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;script src=<span class="string">"https://unpkg.com/react@15/dist/react.min.js"</span>&gt;&lt;/script&gt;</div><div class="line">&lt;script src=<span class="string">"https://unpkg.com/react-dom@15/dist/react-dom.min.js"</span>&gt;&lt;/script&gt;</div><div class="line">&lt;script src=<span class="string">"https://npmcdn.com/babel-core@5.8.38/browser.min.js"</span>&gt;&lt;/script&gt;</div></pre></td></tr></table></figure>
+<h3 id="第二步：编写代码"><a href="#第二步：编写代码" class="headerlink" title="第二步：编写代码"></a>第二步：编写代码</h3><h4 id="第一种方法：使用React-DOM-XX-标签名"><a href="#第一种方法：使用React-DOM-XX-标签名" class="headerlink" title="第一种方法：使用React.DOM.XX(标签名)"></a>第一种方法：使用React.DOM.XX(标签名)</h4><p><img src="http://ofl0flipo.bkt.clouddn.com/1116R01.jpg" alt=""></p>
+<h4 id="第二种方法-使用JSX语法"><a href="#第二种方法-使用JSX语法" class="headerlink" title="第二种方法:使用JSX语法"></a>第二种方法:使用JSX语法</h4><p><img src="http://ofl0flipo.bkt.clouddn.com/1116R02.jpg" alt=""></p>
+<p>JSX是对JavaScript语法的扩展，它让我们可以在JavaScript代码中以类似HTML 的方式创建React元素。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>1.React不是一个MVC框架，它是构建易于可重复调用的web组件，侧重于UI, 也就是view层<br>2.其次React是单向的从数据到视图的渲染，非双向数据绑定<br>3.使用JsX语法创建React元素更为简洁</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/11/16/React入门实战/" data-id="civkj3cb70000s0u7y20bxmoy" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/11/13/你所不知道的console/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">你所不知道的console</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/11/16/React入门实战/">React入门实战</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/13/你所不知道的console/">你所不知道的console</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/07/JavaScript的比较运算符/">JavaScript的比较运算符</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/27/mybatis之多表查询/">Mybatis之关联查询</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/26/关于即时函数的一些知识/">关于即时函数的一些知识</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Medca<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/atom.xml" class="mobile-nav-link">rss</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
