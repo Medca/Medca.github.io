@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>对JS的call、apply和bind方法的一点体会 | E学</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="。。。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="对JS的call、apply和bind方法的一点体会">
+<meta property="og:url" content="http://yoursite.com/2016/11/28/对JS的call、apply和bind方法的一点体会/index.html">
+<meta property="og:site_name" content="E学">
+<meta property="og:description" content="。。。">
+<meta property="og:updated_time" content="2016-11-28T05:25:41.528Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="对JS的call、apply和bind方法的一点体会">
+<meta name="twitter:description" content="。。。">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">E学</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/atom.xml">rss</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-对JS的call、apply和bind方法的一点体会" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/28/对JS的call、apply和bind方法的一点体会/" class="article-date">
+  <time datetime="2016-11-28T03:59:31.000Z" itemprop="datePublished">2016-11-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      对JS的call、apply和bind方法的一点体会
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="/assets/js/DPlayer.min.js"> </script><script src="/assets/js/APlayer.min.js"> </script><p>。。。<br><a id="more"></a></p>
+<h2 id="介绍call、apply和bind方法前，先看一段简单的代码"><a href="#介绍call、apply和bind方法前，先看一段简单的代码" class="headerlink" title="介绍call、apply和bind方法前，先看一段简单的代码"></a>介绍call、apply和bind方法前，先看一段简单的代码</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Peason</span>(<span class="params">name</span>)</span>&#123;</div><div class="line">    <span class="keyword">this</span>.name = name;</div><div class="line">&#125;</div><div class="line">Peason.prototype = &#123;</div><div class="line">    <span class="attr">constructor</span>:Peason,</div><div class="line">    <span class="attr">say</span>:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> p = <span class="keyword">new</span> Peason(<span class="string">'Medca'</span>);</div><div class="line">p.say();</div><div class="line"></div><div class="line"><span class="keyword">var</span> student = &#123;</div><div class="line">    <span class="attr">name</span>:<span class="string">'Mike'</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h2 id="若需要给student也使用say方法，此时可以使用call、apply和bind，实现代码的复用"><a href="#若需要给student也使用say方法，此时可以使用call、apply和bind，实现代码的复用" class="headerlink" title="若需要给student也使用say方法，此时可以使用call、apply和bind，实现代码的复用"></a>若需要给student也使用say方法，此时可以使用call、apply和bind，实现代码的复用</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 1 call</span></div><div class="line">p.say.call(student);</div><div class="line"><span class="comment">// 2 apply</span></div><div class="line">p.say.apply(student);</div><div class="line"><span class="comment">// 3 bind</span></div><div class="line">p.say.bind(student)();</div></pre></td></tr></table></figure>
+<h2 id="call、apply的区别"><a href="#call、apply的区别" class="headerlink" title="call、apply的区别"></a>call、apply的区别</h2><p>他们之间的差别在于参数的区别，call和aplly的第一个参数都是要改变上下文的对象，而call从第二个参数开始以参数列表的形式展现，apply则是把除了改变上下文对象的参数放在一个数组里面作为它的第二个参数。<br>fn.call(obj,arg1,arg2…);<br>fn.apply(obj,[arg1,arg2…]);</p>
+<h2 id="bind"><a href="#bind" class="headerlink" title="bind"></a>bind</h2><h3 id="bind与call很相似。"><a href="#bind与call很相似。" class="headerlink" title="bind与call很相似。"></a>bind与call很相似。</h3><p>例如，可接受的参数都分为两部分，且第一个参数都是作为执行时函数上下文中的this的对象。</p>
+<h3 id="不同点"><a href="#不同点" class="headerlink" title="不同点"></a>不同点</h3><p>①bind的返回值是函数<br>②后面的参数的使用也有区别</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/11/28/对JS的call、apply和bind方法的一点体会/" data-id="ciw1mt6yf00079gu7r1p20xw5" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/11/16/React入门实战/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">React入门实战</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/11/28/对JS的call、apply和bind方法的一点体会/">对JS的call、apply和bind方法的一点体会</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/16/React入门实战/">React入门实战</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/13/你所不知道的console/">你所不知道的console</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/07/JavaScript的比较运算符/">JavaScript的比较运算符</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/27/mybatis之多表查询/">Mybatis之关联查询</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Medca<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/atom.xml" class="mobile-nav-link">rss</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
