@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Javascript数组知识点总结 | E学</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="数组的方法很多，所以整理出来了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Javascript数组知识点总结">
+<meta property="og:url" content="http://yoursite.com/2016/12/26/Javascript数组知识点总结/index.html">
+<meta property="og:site_name" content="E学">
+<meta property="og:description" content="数组的方法很多，所以整理出来了">
+<meta property="og:updated_time" content="2016-12-26T01:57:33.825Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Javascript数组知识点总结">
+<meta name="twitter:description" content="数组的方法很多，所以整理出来了">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">E学</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/atom.xml">rss</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Javascript数组知识点总结" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/26/Javascript数组知识点总结/" class="article-date">
+  <time datetime="2016-12-26T01:45:29.000Z" itemprop="datePublished">2016-12-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Javascript数组知识点总结
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="/assets/js/DPlayer.min.js"> </script><script src="/assets/js/APlayer.min.js"> </script><p>数组的方法很多，所以整理出来了<br><a id="more"></a><br>本文转载自<a href="http://url.cn/42up40f" target="_blank" rel="external">此文章</a> </p>
+<h2 id="1、创建方法"><a href="#1、创建方法" class="headerlink" title="1、创建方法"></a>1、创建方法</h2><p>空数组： var Obj=new Array();<br>指定长度数组：var Obj=new Array(size);<br>指定元素组：var Obj=new Array(元素1，元素2，…,元素N);<br>单维数组： var Obj=[元素1，元素2，元素3，…，元素N]；</p>
+<p>多维数组：var a =new Array([数组序列1],[数组序列2],[数组序列N]);</p>
+<h2 id="2、基本操作"><a href="#2、基本操作" class="headerlink" title="2、基本操作"></a>2、基本操作</h2><h3 id="1-存取数组元素"><a href="#1-存取数组元素" class="headerlink" title="1.存取数组元素"></a>1.存取数组元素</h3><p>单维数组：数组名[下标索引]<br>多维数组：数组名[外层数组下标]<br>特性：数组长度是弹性的，可自由伸缩<br>           数组下标从0开始<br>          下标类型 ①：数值<br>                          ②：非数值（转成字符串，生存关联数组，下标作为对象属性的名字）</p>
+<h3 id="2-增加数组"><a href="#2-增加数组" class="headerlink" title="2.增加数组"></a>2.增加数组</h3><p>使用”[ ]”运算符指定下一个新标</p>
+<h3 id="3-删除数组"><a href="#3-删除数组" class="headerlink" title="3.删除数组"></a>3.删除数组</h3><p>delete数组名[下标]</p>
+<h3 id="4-遍历数组"><a href="#4-遍历数组" class="headerlink" title="4.遍历数组"></a>4.遍历数组</h3><p>for(var 数组元素变量 in 数组)</p>
+<h2 id="3、数组属性"><a href="#3、数组属性" class="headerlink" title="3、数组属性"></a>3、数组属性</h2><h3 id="1-constructor"><a href="#1-constructor" class="headerlink" title="1.constructor"></a>1.constructor</h3><p>引用数组对象的构造函数</p>
+<h3 id="2-length"><a href="#2-length" class="headerlink" title="2.length"></a>2.length</h3><p>返回数组的长度</p>
+<h3 id="3-prototype"><a href="#3-prototype" class="headerlink" title="3.prototype"></a>3.prototype</h3><p>通过增加属性和方法拓展数组定义</p>
+<h2 id="4、操作数组"><a href="#4、操作数组" class="headerlink" title="4、操作数组"></a>4、操作数组</h2><h3 id="①-添加："><a href="#①-添加：" class="headerlink" title="① 添加："></a>① 添加：</h3><p>push():在数组末尾添加数组<br>unshift():在数组头部添加数组<br>concat():合并两个数组</p>
+<h3 id="②-删除："><a href="#②-删除：" class="headerlink" title="② 删除："></a>② 删除：</h3><p>pop():删除并返回数组的最后一个元素<br>shift():删除并返回数组的第一个元素</p>
+<h3 id="③-子元素："><a href="#③-子元素：" class="headerlink" title="③ 子元素："></a>③ 子元素：</h3><p>splice():<br>删除任意数量的项目: splice(要删除的起始下标，要删除的项数)<br>在指定位置插入指定项: splice(起始下标,0,要插入的项)  0表示不删除任何项<br>替换任意数量的项: splice(起始下标,要删除的项数,要插入的项)<br>slice():<br>功能：从已有数组中选取部分元素构成新数组<br>参数：1.返回项的起始位置 2.返回项的结束位置<br>注意：1.如果是负数，则用数组长度加上该值确定位置<br>           2.起始位置实为数组的实际下标<br>           3.结束位置的实际下标为结束数值减1</p>
+<h3 id="④-数组排序"><a href="#④-数组排序" class="headerlink" title="④ 数组排序"></a>④ 数组排序</h3><p>reverse():颠倒数组中元素的顺序<br>sort():<br>功能：对字符数组或数字数组进行排序<br>特性：1.默认为按字符串比较<br>           2.按数值大小比较需函数支持(升序)</p>
+<h3 id="⑤-数组转换"><a href="#⑤-数组转换" class="headerlink" title="⑤ 数组转换"></a>⑤ 数组转换</h3><p>tostring() :转化为字符串并返回<br>toLocaleString()：转化为本地格式字符串并返回<br>join():用指定分隔符分割数组并转化为字符串</p>
+<h3 id="⑥位置方法"><a href="#⑥位置方法" class="headerlink" title="⑥位置方法"></a>⑥位置方法</h3><p>indexof()：从数组的起始位置开始查找<br>lastIndexof()：从数组的结束位置开始查找<br>参数：indexof(1,2)1.要查找的项 2表示查找起点的位置索引</p>
+<h3 id="⑦迭代方法"><a href="#⑦迭代方法" class="headerlink" title="⑦迭代方法"></a>⑦迭代方法</h3><p>every():如果该函数的每一项都返回true，则返回true<br>filter()：返回值为true的所有数组成员<br>forEach():无返回值<br>map():返回每次函数调用的结果函数<br>some():有任意一项返回ture，则返回true</p>
+<h3 id="⑧缩小方法"><a href="#⑧缩小方法" class="headerlink" title="⑧缩小方法"></a>⑧缩小方法</h3><p>reduce():从数组起始位置开始遍历<br>reduceRight():从数组末尾位置开始遍历</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/12/26/Javascript数组知识点总结/" data-id="cix5fgj3x00014gu7gniwafkn" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Javascript/">Javascript</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/12/13/进阶——ES6的const与let/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Javascript/">Javascript</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Java/" style="font-size: 15px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/Javascript/" style="font-size: 10px;">Javascript</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/12/26/Javascript数组知识点总结/">Javascript数组知识点总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/13/进阶——ES6的const与let/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/28/对JS的call、apply和bind方法的一点体会/">对JS的call、apply和bind方法的一点体会</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/16/React入门实战/">React入门实战</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/13/你所不知道的console/">你所不知道的console</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Medca<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/atom.xml" class="mobile-nav-link">rss</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
