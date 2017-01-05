@@ -94,7 +94,7 @@
       
         <script src="/assets/js/DPlayer.min.js"> </script><script src="/assets/js/APlayer.min.js"> </script><h4 id="定义："><a href="#定义：" class="headerlink" title="定义："></a>定义：</h4><p>即时函数是该函数加载完就会立即被执行，而不是等待页面加载完之后才执行即时函数，这和window.onload()和$(function(){})都是有区别的，所以即时函数是不能替代以上两者的。</p>
 <a id="more"></a>
-<div id="aplayer2" class="aplayer" style="margin-bottom: 20px;"></div><script>var aplayer2 = new APlayer({element: document.getElementById("aplayer2"),narrow: false,autoplay: false,showlrc: 0,music : {title: "走着走着就散了",author: "庄心妍",url: "庄心妍 - 走着走着就散了.mp3",pic: ""}});aplayer2.init();</script>
+<div id="aplayer3" class="aplayer" style="margin-bottom: 20px;"></div><script>var aplayer3 = new APlayer({element: document.getElementById("aplayer3"),narrow: false,autoplay: false,showlrc: 0,music : {title: "走着走着就散了",author: "庄心妍",url: "庄心妍 - 走着走着就散了.mp3",pic: ""}});aplayer3.init();</script>
 <h4 id="即时函数的使用："><a href="#即时函数的使用：" class="headerlink" title="即时函数的使用："></a>即时函数的使用：</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> btn = <span class="built_in">document</span>.getElementById(<span class="string">"btn"</span>);</div><div class="line">btn.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">	<span class="built_in">console</span>.log(<span class="string">"hello"</span>)</div><div class="line">&#125;;</div><div class="line"></div><div class="line">(<span class="function"><span class="keyword">function</span>(<span class="params">i</span>)</span>&#123;</div><div class="line">	<span class="built_in">console</span>.log(<span class="string">"======"</span>+i);</div><div class="line">&#125;)(<span class="string">"dosomething"</span>)</div></pre></td></tr></table></figure>
 <p>访问页面时，即时函数会自动执行，打开控制台显示：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">======dosomething</div></pre></td></tr></table></figure></p>
 <p>点击按钮时，控制台才会打印”hello”:<br><img src="http://ofl0flipo.bkt.clouddn.com/zfun-1.png" alt=""></p>
@@ -111,7 +111,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/10/26/关于即时函数的一些知识/" data-id="cix5g8pzl000bzwu7fr24a6v9" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/10/26/关于即时函数的一些知识/" data-id="cixjstz1x000hcsu7od9n43d8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -172,7 +172,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a></li></ul>
     </div>
   </div>
 
@@ -183,6 +183,10 @@
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2017/01/05/JavaScript原型中的哲学思想/">JavaScript原型中的哲学思想</a>
+          </li>
         
           <li>
             <a href="/2016/12/26/Javascript数组知识点总结/">Javascript数组知识点总结</a>
@@ -200,10 +204,6 @@
             <a href="/2016/11/13/你所不知道的console/">你所不知道的console</a>
           </li>
         
-          <li>
-            <a href="/2016/11/07/JavaScript的比较运算符/">JavaScript的比较运算符</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -216,7 +216,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2016 Medca<br>
+      &copy; 2017 Medca<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
