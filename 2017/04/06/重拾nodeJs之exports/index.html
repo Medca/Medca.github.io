@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>重拾nodeJs之exports(一) | E学</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="突然想起好久没写文章了，最近也在重学nodejs，所以打算写一系列“重拾nodeJs”系列的文章。这篇是”重拾nodeJs”系列的开篇。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="重拾nodeJs之exports(一)">
+<meta property="og:url" content="http://yoursite.com/2017/04/06/重拾nodeJs之exports/index.html">
+<meta property="og:site_name" content="E学">
+<meta property="og:description" content="突然想起好久没写文章了，最近也在重学nodejs，所以打算写一系列“重拾nodeJs”系列的文章。这篇是”重拾nodeJs”系列的开篇。">
+<meta property="og:image" content="http://ofl0flipo.bkt.clouddn.com/node20170406155739.jpg">
+<meta property="og:updated_time" content="2017-04-07T01:12:49.678Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="重拾nodeJs之exports(一)">
+<meta name="twitter:description" content="突然想起好久没写文章了，最近也在重学nodejs，所以打算写一系列“重拾nodeJs”系列的文章。这篇是”重拾nodeJs”系列的开篇。">
+<meta name="twitter:image" content="http://ofl0flipo.bkt.clouddn.com/node20170406155739.jpg">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">E学</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/atom.xml">rss</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-重拾nodeJs之exports" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/06/重拾nodeJs之exports/" class="article-date">
+  <time datetime="2017-04-06T06:46:30.000Z" itemprop="datePublished">2017-04-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      重拾nodeJs之exports(一)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="/assets/js/DPlayer.min.js"> </script><script src="/assets/js/APlayer.min.js"> </script><p>突然想起好久没写文章了，最近也在重学nodejs，所以打算写一系列“重拾nodeJs”系列的文章。这篇是”重拾nodeJs”系列的开篇。</p>
+<a id="more"></a>
+<h3 id="1-概述："><a href="#1-概述：" class="headerlink" title="1.概述："></a>1.概述：</h3><p>  Node.js是基于Chrome JavaScript运行时建立的一个平台，实际上它是对Google Chrome V8引擎进行了封装，它主要用于创建快速的、可扩展的网络应用。Node.js采用事件驱动和非阻塞I/O模型，使其变得轻微和高效，非常适合构建运行在分布式设备的数据密集型实时应用。</p>
+<p>  运行于浏览器的Javascript，浏览器就是Javascript代码的解析器，而Node.js则是服务器端JS的代码解析器，存于服务器端的JS代码由Node.js来解析和应用。</p>
+<p>  JS解析器只是JS代码运行的一种环境，浏览器是JS运行的一种环境，浏览器为JS提供了操作DOM对象和window对象等接口。Node.js也是JS的一种运行环境，node.js为JS提供操作文件、创建http服务、创建TCP、UDP服务等接口，所以Node.js可以完成其他后台语言能完成的工作。</p>
+<h3 id="2-nodejs的安装参考我的这篇文章nvm实现nodejs版本控制"><a href="#2-nodejs的安装参考我的这篇文章nvm实现nodejs版本控制" class="headerlink" title="2.nodejs的安装参考我的这篇文章nvm实现nodejs版本控制"></a>2.nodejs的安装参考我的这篇文章<a href="https://medca.github.io/2016/10/25/nvm实现nodejs版本控制/" target="_blank" rel="external">nvm实现nodejs版本控制</a></h3><h3 id="3-关于函数和变量提供给外部文件调用和执行的思考"><a href="#3-关于函数和变量提供给外部文件调用和执行的思考" class="headerlink" title="3.关于函数和变量提供给外部文件调用和执行的思考"></a>3.关于函数和变量提供给外部文件调用和执行的思考</h3><p>3.1 Nodejs遵循的规范是Commonjs的规范AMD模式。所定义的属性和方法都必须挂载到exports和module.exports中。<br>3.2 简单介绍下函数和变量的暴露和引入。</p>
+<h5 id="函数和变量将挂载到exports-然后汇总到module-exports上。-关于exports和module-exports的区别下文会做简单的比较"><a href="#函数和变量将挂载到exports-然后汇总到module-exports上。-关于exports和module-exports的区别下文会做简单的比较" class="headerlink" title="函数和变量将挂载到exports,然后汇总到module.exports上。(关于exports和module.exports的区别下文会做简单的比较)"></a>函数和变量将挂载到exports,然后汇总到module.exports上。(关于exports和module.exports的区别下文会做简单的比较)</h5><p>定义一个val.js文件，代码如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">exports.a = <span class="string">'aaa'</span></div><div class="line">exports.b = <span class="number">1</span></div><div class="line">exports.arr = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line">exports.obj = &#123;</div><div class="line">	<span class="attr">a</span>: <span class="number">1</span>,</div><div class="line">	<span class="attr">b</span>: <span class="string">'b'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>也可以将所有的方法和变量放入一个对象中暴露出去<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">exports.data = &#123;</div><div class="line">	<span class="attr">a</span>: <span class="string">'aaa'</span>,</div><div class="line">	<span class="attr">b</span>: <span class="number">1</span>,</div><div class="line">	<span class="attr">arr</span>: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],</div><div class="line">	<span class="attr">obj</span>: &#123;</div><div class="line">		<span class="attr">a</span>: <span class="number">1</span>,</div><div class="line">		<span class="attr">b</span>: <span class="string">'b'</span></div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h5 id="在外部文件通过require-引入"><a href="#在外部文件通过require-引入" class="headerlink" title="在外部文件通过require()引入"></a>在外部文件通过require()引入</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> value = <span class="built_in">require</span>(<span class="string">'./val.js'</span>)</div><div class="line"><span class="comment">// 自定义模块不可以省略路径，但可以省略'.js'</span></div><div class="line"><span class="comment">// let value = require('./val')</span></div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(value.a)</div><div class="line"><span class="built_in">console</span>.log(value.b)</div><div class="line"><span class="built_in">console</span>.log(value.arr)</div><div class="line"><span class="built_in">console</span>.log(value.obj)</div></pre></td></tr></table></figure>
+<p>在此目录下打开命令行窗口执行’node index.js’(这里的后缀一样可以省略)，输出结果<br><img src="http://ofl0flipo.bkt.clouddn.com/node20170406155739.jpg" alt=""></p>
+<h5 id="exports和module-exports的区别"><a href="#exports和module-exports的区别" class="headerlink" title="exports和module.exports的区别"></a>exports和module.exports的区别</h5><p>1) exports.属性 = 属性值 和 module.exports.属性=属性值。是没有任何区别,后面定义会把相同名字的属性值覆盖。<br>2) exports不能够单独定义对象以外的形态<br>module.exports可以定义任何数据类型，但是这种在开发过中一定很少使用。</p>
+<h3 id="4-总结：nodejs里面的变量和函数是通过exports暴露出去，require引入的。其实还是遵循AMD模式。"><a href="#4-总结：nodejs里面的变量和函数是通过exports暴露出去，require引入的。其实还是遵循AMD模式。" class="headerlink" title="4.总结：nodejs里面的变量和函数是通过exports暴露出去，require引入的。其实还是遵循AMD模式。"></a>4.总结：nodejs里面的变量和函数是通过exports暴露出去，require引入的。其实还是遵循AMD模式。</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/04/06/重拾nodeJs之exports/" data-id="cj17d1me2000ln8u7v0e2nm9z" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodeJs/">nodeJs</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/07/重拾nodejs之异步编程/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          重拾nodejs之异步编程(二)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/01/05/JavaScript原型中的哲学思想/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">JavaScript原型中的哲学思想</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodeJs/">nodeJs</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/nodeJs/" style="font-size: 10px;">nodeJs</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/04/07/重拾nodejs之异步编程/">重拾nodejs之异步编程(二)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/06/重拾nodeJs之exports/">重拾nodeJs之exports(一)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/01/05/JavaScript原型中的哲学思想/">JavaScript原型中的哲学思想</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/26/Javascript数组知识点总结/">Javascript数组知识点总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/28/对JS的call、apply和bind方法的一点体会/">对JS的call、apply和bind方法的一点体会</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Medca<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/atom.xml" class="mobile-nav-link">rss</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

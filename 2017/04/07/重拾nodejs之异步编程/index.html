@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>重拾nodejs之异步编程(二) | E学</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在nodeJs的API中大部分都是基于异步编程操作的，少数的同步方法会在其方法名有’sync’来标识的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="重拾nodejs之异步编程(二)">
+<meta property="og:url" content="http://yoursite.com/2017/04/07/重拾nodejs之异步编程/index.html">
+<meta property="og:site_name" content="E学">
+<meta property="og:description" content="在nodeJs的API中大部分都是基于异步编程操作的，少数的同步方法会在其方法名有’sync’来标识的。">
+<meta property="og:image" content="http://ofl0flipo.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20170407100317.jpg">
+<meta property="og:image" content="http://ofl0flipo.bkt.clouddn.com/node20170407101609.jpg">
+<meta property="og:updated_time" content="2017-04-07T04:56:21.019Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="重拾nodejs之异步编程(二)">
+<meta name="twitter:description" content="在nodeJs的API中大部分都是基于异步编程操作的，少数的同步方法会在其方法名有’sync’来标识的。">
+<meta name="twitter:image" content="http://ofl0flipo.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20170407100317.jpg">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">E学</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/atom.xml">rss</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-重拾nodejs之异步编程" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/07/重拾nodejs之异步编程/" class="article-date">
+  <time datetime="2017-04-07T01:15:42.000Z" itemprop="datePublished">2017-04-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      重拾nodejs之异步编程(二)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="/assets/js/DPlayer.min.js"> </script><script src="/assets/js/APlayer.min.js"> </script><p>在nodeJs的API中大部分都是基于异步编程操作的，少数的同步方法会在其方法名有’sync’来标识的。<br><a id="more"></a></p>
+<h2 id="1-nodeJs的高性能其核心主要是事件轮询和异步编程。简单解释下事件轮询，维持主线程运行的循环这部分就是”事件轮询”，它存在于主线程中，负责不停地调用开发者编写的代码。但对开发者是不可见的。对于异步编程，简单的理解就是在处理一段代码的时候，cpu可以处理另外一段代码，而不需要等上一段代码的结果再往下执行。下面我们做下同步和异步的比较，直接上代码："><a href="#1-nodeJs的高性能其核心主要是事件轮询和异步编程。简单解释下事件轮询，维持主线程运行的循环这部分就是”事件轮询”，它存在于主线程中，负责不停地调用开发者编写的代码。但对开发者是不可见的。对于异步编程，简单的理解就是在处理一段代码的时候，cpu可以处理另外一段代码，而不需要等上一段代码的结果再往下执行。下面我们做下同步和异步的比较，直接上代码：" class="headerlink" title="1. nodeJs的高性能其核心主要是事件轮询和异步编程。简单解释下事件轮询，维持主线程运行的循环这部分就是”事件轮询”，它存在于主线程中，负责不停地调用开发者编写的代码。但对开发者是不可见的。对于异步编程，简单的理解就是在处理一段代码的时候，cpu可以处理另外一段代码，而不需要等上一段代码的结果再往下执行。下面我们做下同步和异步的比较，直接上代码："></a>1. nodeJs的高性能其核心主要是事件轮询和异步编程。简单解释下事件轮询，维持主线程运行的循环这部分就是”事件轮询”，它存在于主线程中，负责不停地调用开发者编写的代码。但对开发者是不可见的。对于异步编程，简单的理解就是在处理一段代码的时候，cpu可以处理另外一段代码，而不需要等上一段代码的结果再往下执行。下面我们做下同步和异步的比较，直接上代码：</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(<span class="string">"---------同步代码-----------"</span>)</div><div class="line"><span class="built_in">console</span>.log(<span class="number">1</span>)</div><div class="line"><span class="built_in">console</span>.log(<span class="number">2</span>)</div><div class="line"><span class="built_in">console</span>.log(<span class="number">3</span>)</div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(<span class="string">"---------异步代码-----------"</span>)</div><div class="line"><span class="built_in">console</span>.log(<span class="number">1</span>)</div><div class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">2</span>),<span class="number">1000</span>)</div><div class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">3</span>),<span class="number">2000</span>)</div></pre></td></tr></table></figure>
+<p>输出结果；<br><img src="http://ofl0flipo.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20170407100317.jpg" alt=""></p>
+<h4 id="从结果可以看出，同步编程会按照顺序执行，而加了setTimeout的代码就成了异步编程-此时第二个setTimeout不会等第一个setTimeout执行完再开始计时，而是两个setTimeout同时开始计时，则第二个setTimeout会在第一个setTimeout执行完的一秒后输出。"><a href="#从结果可以看出，同步编程会按照顺序执行，而加了setTimeout的代码就成了异步编程-此时第二个setTimeout不会等第一个setTimeout执行完再开始计时，而是两个setTimeout同时开始计时，则第二个setTimeout会在第一个setTimeout执行完的一秒后输出。" class="headerlink" title="从结果可以看出，同步编程会按照顺序执行，而加了setTimeout的代码就成了异步编程,此时第二个setTimeout不会等第一个setTimeout执行完再开始计时，而是两个setTimeout同时开始计时，则第二个setTimeout会在第一个setTimeout执行完的一秒后输出。"></a>从结果可以看出，同步编程会按照顺序执行，而加了setTimeout的代码就成了异步编程,此时第二个setTimeout不会等第一个setTimeout执行完再开始计时，而是两个setTimeout同时开始计时，则第二个setTimeout会在第一个setTimeout执行完的一秒后输出。</h4><h2 id="2-回调函数通常和异步编程一起出现，回调函数只是对异步编程的结果进行处理，这里需要注意的是：没有回调函数同样可以实现异步编程。我们来看看异步编程和回调函数的搭配。"><a href="#2-回调函数通常和异步编程一起出现，回调函数只是对异步编程的结果进行处理，这里需要注意的是：没有回调函数同样可以实现异步编程。我们来看看异步编程和回调函数的搭配。" class="headerlink" title="2. 回调函数通常和异步编程一起出现，回调函数只是对异步编程的结果进行处理，这里需要注意的是：没有回调函数同样可以实现异步编程。我们来看看异步编程和回调函数的搭配。"></a>2. 回调函数通常和异步编程一起出现，回调函数只是对异步编程的结果进行处理，这里需要注意的是：<strong>没有回调函数同样可以实现异步编程。</strong>我们来看看异步编程和回调函数的搭配。</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">timeout</span>(<span class="params">time, callback</span>)</span>&#123;</div><div class="line">	setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">		callback &amp;&amp; callback()</div><div class="line">	&#125;, time * <span class="number">1000</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn1</span>(<span class="params"></span>)</span>&#123;</div><div class="line">	timeout(<span class="number">1</span>, () =&gt; &#123;</div><div class="line">		<span class="built_in">console</span>.log(<span class="string">"第一次执行"</span>)</div><div class="line">	&#125;)</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn2</span>(<span class="params"></span>)</span>&#123;</div><div class="line">	timeout(<span class="number">2</span>, () =&gt; &#123;</div><div class="line">		<span class="built_in">console</span>.log(<span class="string">"第二次执行"</span>)</div><div class="line">	&#125;)</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn3</span>(<span class="params"></span>)</span>&#123;</div><div class="line">	timeout(<span class="number">3</span>, () =&gt; &#123;</div><div class="line">		<span class="built_in">console</span>.log(<span class="string">"第三次执行"</span>)</div><div class="line">	&#125;)</div><div class="line">&#125;</div><div class="line"></div><div class="line">fn1()</div><div class="line">fn2()</div><div class="line">fn3()</div></pre></td></tr></table></figure>
+<h4 id="代码可以按照时间的长短输出。（再次提醒，这里只用了3秒）这里得出的关于执行顺序的结论是：同步-gt-异步-gt-回调"><a href="#代码可以按照时间的长短输出。（再次提醒，这里只用了3秒）这里得出的关于执行顺序的结论是：同步-gt-异步-gt-回调" class="headerlink" title="代码可以按照时间的长短输出。（再次提醒，这里只用了3秒）这里得出的关于执行顺序的结论是：同步 ==&gt;  异步 ==&gt; 回调"></a>代码可以按照时间的长短输出。（再次提醒，这里只用了3秒）这里得出的关于执行顺序的结论是：<strong>同步 ==&gt;  异步 ==&gt; 回调</strong></h4><h2 id="3-如果想要在以上代码的基础上实现同步代码。即fn2在fn1执行完毕后开始计时，fn3在fn2执行完毕后开始计时。那该怎么实现呢？"><a href="#3-如果想要在以上代码的基础上实现同步代码。即fn2在fn1执行完毕后开始计时，fn3在fn2执行完毕后开始计时。那该怎么实现呢？" class="headerlink" title="3.如果想要在以上代码的基础上实现同步代码。即fn2在fn1执行完毕后开始计时，fn3在fn2执行完毕后开始计时。那该怎么实现呢？"></a>3.如果想要在以上代码的基础上实现同步代码。即fn2在fn1执行完毕后开始计时，fn3在fn2执行完毕后开始计时。那该怎么实现呢？</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">timeout</span>(<span class="params">time, callback</span>)</span>&#123;</div><div class="line">	setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">		callback &amp;&amp; callback()</div><div class="line">	&#125;, time * <span class="number">1000</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn1</span>(<span class="params"></span>)</span>&#123;</div><div class="line">	timeout(<span class="number">1</span>, () =&gt; &#123;</div><div class="line">		<span class="built_in">console</span>.log(<span class="string">"第一次执行"</span>)</div><div class="line">		fn2()</div><div class="line">	&#125;)</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn2</span>(<span class="params"></span>)</span>&#123;</div><div class="line">	timeout(<span class="number">2</span>, () =&gt; &#123;</div><div class="line">		<span class="built_in">console</span>.log(<span class="string">"第二次执行"</span>)</div><div class="line">		fn3()</div><div class="line">	&#125;)</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn3</span>(<span class="params"></span>)</span>&#123;</div><div class="line">	timeout(<span class="number">3</span>, () =&gt; &#123;</div><div class="line">		<span class="built_in">console</span>.log(<span class="string">"第三次执行"</span>)</div><div class="line">	&#125;)</div><div class="line">&#125;</div><div class="line"></div><div class="line">fn1()</div></pre></td></tr></table></figure>
+<p>输出结果:<br><img src="http://ofl0flipo.bkt.clouddn.com/node20170407101609.jpg" alt=""></p>
+<h4 id="实现的思路就是把fn3放到fn2中，fn2放到fn1中。就是回调函数嵌入回调函数，这样就造成了’回调地狱’，下篇文章将介绍使用promise优雅地解决回调地狱的问题。"><a href="#实现的思路就是把fn3放到fn2中，fn2放到fn1中。就是回调函数嵌入回调函数，这样就造成了’回调地狱’，下篇文章将介绍使用promise优雅地解决回调地狱的问题。" class="headerlink" title="实现的思路就是把fn3放到fn2中，fn2放到fn1中。就是回调函数嵌入回调函数，这样就造成了’回调地狱’，下篇文章将介绍使用promise优雅地解决回调地狱的问题。"></a>实现的思路就是把fn3放到fn2中，fn2放到fn1中。就是回调函数嵌入回调函数，这样就造成了’回调地狱’，下篇文章将介绍使用promise优雅地解决回调地狱的问题。</h4><h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4.总结"></a>4.总结</h2><p>这里主要讲解了异步编程的相关知识，再次提示代码的执行顺序：<strong>同步 ==&gt;  异步 ==&gt; 回调</strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/04/07/重拾nodejs之异步编程/" data-id="cj17d1me8000nn8u7ysr67mn5" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodeJs/">nodeJs</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/04/06/重拾nodeJs之exports/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">重拾nodeJs之exports(一)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodeJs/">nodeJs</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/nodeJs/" style="font-size: 10px;">nodeJs</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/04/07/重拾nodejs之异步编程/">重拾nodejs之异步编程(二)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/06/重拾nodeJs之exports/">重拾nodeJs之exports(一)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/01/05/JavaScript原型中的哲学思想/">JavaScript原型中的哲学思想</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/26/Javascript数组知识点总结/">Javascript数组知识点总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/28/对JS的call、apply和bind方法的一点体会/">对JS的call、apply和bind方法的一点体会</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Medca<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/atom.xml" class="mobile-nav-link">rss</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
