@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>重拾nodejs之Promise(三) | E学</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在上一篇文章重拾nodejs之异步编程(二)中提到callback hell(回调地狱)，使得代码很难被理解和维护。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="重拾nodejs之Promise(三)">
+<meta property="og:url" content="http://yoursite.com/2017/04/10/重拾nodejs之Promise/index.html">
+<meta property="og:site_name" content="E学">
+<meta property="og:description" content="在上一篇文章重拾nodejs之异步编程(二)中提到callback hell(回调地狱)，使得代码很难被理解和维护。">
+<meta property="og:image" content="http://ofl0flipo.bkt.clouddn.com/node20170410103834.jpg">
+<meta property="og:image" content="http://ofl0flipo.bkt.clouddn.com/node20170410104350.jpg">
+<meta property="og:image" content="http://ofl0flipo.bkt.clouddn.com/node20170410104350.jpg">
+<meta property="og:image" content="http://ofl0flipo.bkt.clouddn.com/node20170410105827.jpg">
+<meta property="og:image" content="http://ofl0flipo.bkt.clouddn.com/node20170410105827.jpg">
+<meta property="og:image" content="http://ofl0flipo.bkt.clouddn.com/node20170410110354.jpg">
+<meta property="og:image" content="http://ofl0flipo.bkt.clouddn.com/node20170410112425.jpg">
+<meta property="og:updated_time" content="2017-04-10T03:36:43.267Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="重拾nodejs之Promise(三)">
+<meta name="twitter:description" content="在上一篇文章重拾nodejs之异步编程(二)中提到callback hell(回调地狱)，使得代码很难被理解和维护。">
+<meta name="twitter:image" content="http://ofl0flipo.bkt.clouddn.com/node20170410103834.jpg">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">E学</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/atom.xml">rss</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-重拾nodejs之Promise" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/10/重拾nodejs之Promise/" class="article-date">
+  <time datetime="2017-04-10T01:56:41.000Z" itemprop="datePublished">2017-04-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      重拾nodejs之Promise(三)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="/assets/js/DPlayer.min.js"> </script><script src="/assets/js/APlayer.min.js"> </script><p>在上一篇文章<a href="https://medca.github.io/2017/04/07/重拾nodejs之异步编程/" target="_blank" rel="external">重拾nodejs之异步编程(二)</a>中提到callback hell(回调地狱)，使得代码很难被理解和维护。<br><a id="more"></a></p>
+<p>Promise就是改善这种情形的异步编程的解决方案，它由社区最早提出和实现，es6将其写进了语言标准，统一了用法，并且提供了一个原生的对象Promise。</p>
+<h2 id="1-Promise中文意思是’承诺’，当前或者未来的某一时刻做出它承诺的事情来，其行为是由调用者提供的resolved和rejected决定的。所以，Promise中只有两种状态的改变：未完成状态-gt-完成状态-resolved-或者-未完成状态-gt-失败状态-rejected-其状态的改变是不可逆的，resolved和rejected是不可以互相转化的，而且状态的改变一旦决定就不能改变。我们通过代码认识下Promise"><a href="#1-Promise中文意思是’承诺’，当前或者未来的某一时刻做出它承诺的事情来，其行为是由调用者提供的resolved和rejected决定的。所以，Promise中只有两种状态的改变：未完成状态-gt-完成状态-resolved-或者-未完成状态-gt-失败状态-rejected-其状态的改变是不可逆的，resolved和rejected是不可以互相转化的，而且状态的改变一旦决定就不能改变。我们通过代码认识下Promise" class="headerlink" title="1.Promise中文意思是’承诺’，当前或者未来的某一时刻做出它承诺的事情来，其行为是由调用者提供的resolved和rejected决定的。所以，Promise中只有两种状态的改变：未完成状态 =&gt; 完成状态(resolved) 或者 未完成状态 =&gt; 失败状态(rejected) ,其状态的改变是不可逆的，resolved和rejected是不可以互相转化的，而且状态的改变一旦决定就不能改变。我们通过代码认识下Promise"></a>1.Promise中文意思是’承诺’，当前或者未来的某一时刻做出它承诺的事情来，其行为是由调用者提供的resolved和rejected决定的。所以，Promise中只有两种状态的改变：<strong>未完成状态 =&gt; 完成状态(resolved)</strong> 或者 <strong>未完成状态 =&gt; 失败状态(rejected)</strong> ,其状态的改变是不可逆的，resolved和rejected是不可以互相转化的，而且状态的改变一旦决定就不能改变。我们通过代码认识下Promise</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> p = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">	<span class="built_in">console</span>.log(<span class="string">'promise init'</span>)</div><div class="line">	resolve()</div><div class="line">&#125;)</div><div class="line"></div><div class="line">p.then(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'sueccess'</span>))</div></pre></td></tr></table></figure>
+<p>在node下运行的结果：<br><img src="http://ofl0flipo.bkt.clouddn.com/node20170410103834.jpg" alt=""></p>
+<h2 id="2-proomise的错误处理-resolved状态"><a href="#2-proomise的错误处理-resolved状态" class="headerlink" title="2. proomise的错误处理(resolved状态)"></a>2. proomise的错误处理(resolved状态)</h2><h3 id="2-1-Promise中的then同样接收两个resolved-rejected状态的处理"><a href="#2-1-Promise中的then同样接收两个resolved-rejected状态的处理" class="headerlink" title="2.1 Promise中的then同样接收两个resolved, rejected状态的处理"></a>2.1 Promise中的then同样接收两个resolved, rejected状态的处理</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">'use strict'</span></div><div class="line"><span class="keyword">let</span> p = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">	<span class="built_in">console</span>.log(<span class="string">'promise init'</span>)</div><div class="line">	<span class="built_in">console</span>.log(x)</div><div class="line">	resolve()</div><div class="line">	reject()</div><div class="line">&#125;)</div><div class="line"></div><div class="line">p.then(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'sueccess'</span>), () =&gt; <span class="built_in">console</span>.log(<span class="string">'fail'</span>))</div></pre></td></tr></table></figure>
+<p>在node下运行的结果：<br><img src="http://ofl0flipo.bkt.clouddn.com/node20170410104350.jpg" alt=""><br>在严格模式下变量x未定义会报错，所以会进入then方法会resolved的处理。</p>
+<h3 id="2-2-也可以直接使用catch-处理"><a href="#2-2-也可以直接使用catch-处理" class="headerlink" title="2.2 也可以直接使用catch()处理"></a>2.2 也可以直接使用catch()处理</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">'use strict'</span></div><div class="line"><span class="keyword">let</span> p = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">	<span class="built_in">console</span>.log(<span class="string">'promise init'</span>)</div><div class="line">	<span class="built_in">console</span>.log(x)</div><div class="line">	resolve()</div><div class="line">	reject()</div><div class="line">&#125;)</div><div class="line"></div><div class="line">p.then(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'sueccess'</span>))</div><div class="line">.catch(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'fail'</span>))</div></pre></td></tr></table></figure>
+<p>在node下运行的结果：<br><img src="http://ofl0flipo.bkt.clouddn.com/node20170410104350.jpg" alt=""><br>开发中经常使用catch来统一处理异常，这样代码会更加的优雅。</p>
+<h2 id="3-Promise进阶"><a href="#3-Promise进阶" class="headerlink" title="3. Promise进阶"></a>3. Promise进阶</h2><h3 id="3-1then"><a href="#3-1then" class="headerlink" title="3.1then()"></a>3.1then()</h3><p>从上面的例子，我们可以了解到then()方法是Promise实例的方法，即Promise.prototype上的，它的作用是为Promise实例添加状态改变时的回调函数，这个方法的第一个参数是resolved状态的回调函数，第二个参数（可选）是rejected状态的回调函数。</p>
+<p>then方法接收的是上一个promise实例，返回的是一个新的promise的实例。在链式中的then方法（第二个开始），resolve的参数是上一个then中的resolve的返回值。<br>举个例子:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">'use strict'</span></div><div class="line"><span class="keyword">let</span> p = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">	<span class="built_in">console</span>.log(<span class="string">'promise init'</span>)</div><div class="line">	resolve(<span class="string">'start'</span>)</div><div class="line">&#125;)</div><div class="line"></div><div class="line">p.then(<span class="function"><span class="params">result</span> =&gt;</span> &#123;</div><div class="line">	<span class="built_in">console</span>.log(result)</div><div class="line">	<span class="keyword">return</span> <span class="string">'then1'</span></div><div class="line">&#125;).then(<span class="function"><span class="params">result</span> =&gt;</span> &#123;</div><div class="line">	<span class="built_in">console</span>.log(result)</div><div class="line">	<span class="keyword">return</span> <span class="string">'then2'</span></div><div class="line">&#125;).then(<span class="function"><span class="params">result</span> =&gt;</span> &#123;</div><div class="line">	<span class="built_in">console</span>.log(result)</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<p>在node下运行的结果：<br><img src="http://ofl0flipo.bkt.clouddn.com/node20170410105827.jpg" alt=""></p>
+<h3 id="3-2catch"><a href="#3-2catch" class="headerlink" title="3.2catch()"></a>3.2catch()</h3><p>在上文已经提到了catch的作用：用于指定发生错误时的回调。Promise对象的Error对象具有冒泡性质，会一直向后传递，直到被捕获为止。也就是说，错误总是会被下一个catch语句捕获。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">'use strict'</span></div><div class="line"><span class="keyword">let</span> p = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">	<span class="built_in">console</span>.log(<span class="string">'promise init'</span>)</div><div class="line">	resolve(<span class="string">'start'</span>)</div><div class="line">&#125;)</div><div class="line"></div><div class="line">p.then(<span class="function"><span class="params">result</span> =&gt;</span> &#123;</div><div class="line">	<span class="built_in">console</span>.log(result)</div><div class="line">	<span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'then1 Error'</span>)</div><div class="line">	<span class="keyword">return</span> <span class="string">'then1'</span></div><div class="line">&#125;).then(<span class="function"><span class="params">result</span> =&gt;</span> &#123;</div><div class="line">	<span class="built_in">console</span>.log(result)</div><div class="line">	<span class="keyword">return</span> <span class="string">'then2'</span></div><div class="line">&#125;).then(<span class="function"><span class="params">result</span> =&gt;</span> &#123;</div><div class="line">	<span class="built_in">console</span>.log(result)</div><div class="line">&#125;).catch(<span class="function"><span class="params">err</span> =&gt;</span> <span class="built_in">console</span>.log(err.toString()))<span class="comment">//可以捕抓到前面的出现的错误。</span></div></pre></td></tr></table></figure>
+<p>在node下运行的结果：<br><img src="http://ofl0flipo.bkt.clouddn.com/node20170410105827.jpg" alt=""></p>
+<p>在第一个then中抛出了一个错误，在最后一个Promise对象中可以catch到这个错误。</p>
+<p>因为有这种方便的错误处理机制，所以一般来说不要在then方法里面定义reject状态的回调函数， 而是使用catch方法.</p>
+<h2 id="4-Promise对象方法"><a href="#4-Promise对象方法" class="headerlink" title="4. Promise对象方法"></a>4. Promise对象方法</h2><h3 id="4-1-Promise-all"><a href="#4-1-Promise-all" class="headerlink" title="4.1 Promise.all()"></a>4.1 Promise.all()</h3><p>这个方法是让所有的promise都并行进行，然后如果<strong>所有的promise都被resolved了的话才返回resolved，如果只要任意一个rejected，那么就会立即返回rejected。</strong>成功的话按照给定参数的列表顺序返回对应的结果数组。如：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> p = <span class="built_in">Promise</span>.all([p1, p2, p3]);</div></pre></td></tr></table></figure></p>
+<p>比如：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">router.get(<span class="string">'/promiseAll'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">req, res, next</span>) </span>&#123;</div><div class="line">  <span class="keyword">let</span> reqApi = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">    request(<span class="string">'https://api.douban.com/v2/user/linxiaowu'</span>, (err, res, body) =&gt; &#123;</div><div class="line">      <span class="keyword">if</span> (err)&#123;</div><div class="line">        reject(err);</div><div class="line">      &#125; <span class="keyword">else</span>&#123;</div><div class="line">        resolve(body);</div><div class="line">      &#125;</div><div class="line">    &#125;);</div><div class="line">  &#125;);</div><div class="line">  <span class="built_in">Promise</span>.all([reqApi, reqApi, reqApi, reqApi, reqApi])</div><div class="line">  .then(<span class="function">(<span class="params">body</span>) =&gt;</span> &#123;</div><div class="line">    <span class="keyword">return</span> res.render(<span class="string">'index'</span>, &#123;<span class="attr">title</span>: <span class="string">'express'</span>, <span class="attr">result</span>: body&#125;);</div><div class="line">  &#125;)</div><div class="line">  .catch(<span class="function"><span class="params">err</span> =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(err)</div><div class="line">  &#125;)</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<h3 id="4-2-Promise-race"><a href="#4-2-Promise-race" class="headerlink" title="4.2 Promise.race()"></a>4.2 Promise.race()</h3><p>顾名思义就是竞争赛跑的意思，也就是说只要在所有的promise中有一个resolved或者rejected，那么就立刻返回，所以有点争上游的意思。即:任意一个实例率先改变状态，则p的状态就跟着改变，而且状态由率先改变的实例决定。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> p = <span class="built_in">Promise</span>.race([</div><div class="line">    <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</div><div class="line">        setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> resolve(<span class="string">'p1'</span>), <span class="number">10000</span>);</div><div class="line">    &#125;),</div><div class="line">    <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">        setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> reject(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'time out'</span>)), <span class="number">10</span>);</div><div class="line">    &#125;)</div><div class="line">]);</div><div class="line">p.then( <span class="function"><span class="params">ret</span> =&gt;</span> <span class="built_in">console</span>.log(ret))</div><div class="line">    .catch( <span class="function"><span class="params">err</span> =&gt;</span> <span class="built_in">console</span>.log(err.toString()));</div></pre></td></tr></table></figure>
+<p>在node下运行的结果：<br><img src="http://ofl0flipo.bkt.clouddn.com/node20170410110354.jpg" alt=""></p>
+<h3 id="4-3-Promise-resolve-和Promise-reject-，可以将现有的对象转为Promise对象。实例的状态都为resolved-rejected。"><a href="#4-3-Promise-resolve-和Promise-reject-，可以将现有的对象转为Promise对象。实例的状态都为resolved-rejected。" class="headerlink" title="4.3 Promise.resolve()和Promise.reject()，可以将现有的对象转为Promise对象。实例的状态都为resolved/rejected。"></a>4.3 Promise.resolve()和Promise.reject()，可以将现有的对象转为Promise对象。实例的状态都为resolved/rejected。</h3><h2 id="5-最后，写一个将Promise用在开发中的demo"><a href="#5-最后，写一个将Promise用在开发中的demo" class="headerlink" title="5.最后，写一个将Promise用在开发中的demo:"></a>5.最后，写一个将Promise用在开发中的demo:</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line"><span class="xml"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span>document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="undefined"></span></div><div class="line">		</div><div class="line">	<span class="tag">&lt;/<span class="name">style</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="javascript"></span></div><div class="line">		<span class="function"><span class="keyword">function</span> <span class="title">getURL</span>(<span class="params">url</span>)</span>&#123;</div><div class="line">			<span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">				<span class="keyword">let</span> xhr = <span class="keyword">new</span> XMLHttpRequest()</div><div class="line"></div><div class="line">				xhr.open(<span class="string">'get'</span>, url, <span class="literal">true</span>)</div><div class="line"></div><div class="line">				xhr.setRequestHeader(<span class="string">"Content-type"</span>, <span class="string">"application/x-www-form-urlencoded"</span>); </div><div class="line"></div><div class="line">				xhr.onload = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">					<span class="keyword">if</span>(xhr.readState = <span class="number">4</span> &amp;&amp; xhr.status === <span class="number">200</span> || xhr.status === <span class="number">304</span>)&#123;</div><div class="line">						resolve(xhr.responseText)</div><div class="line">					&#125; <span class="keyword">else</span>&#123;</div><div class="line">						reject(<span class="keyword">new</span> <span class="built_in">Error</span>(xhr.statusText))</div><div class="line">					&#125;</div><div class="line">				&#125;</div><div class="line"></div><div class="line">				xhr.onerror = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">					reject(<span class="keyword">new</span> <span class="built_in">Error</span>(xhr.statusText))</div><div class="line">				&#125;</div><div class="line"></div><div class="line">				xhr.send();</div><div class="line">			&#125;)</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		<span class="keyword">let</span> URL = <span class="string">"https://rockjins.js.org"</span>;</div><div class="line">		getURL(URL).then( <span class="function">(<span class="params">value</span>) =&gt;</span> &#123;</div><div class="line">		  <span class="built_in">console</span>.log(value);</div><div class="line">		&#125;).catch(<span class="function">(<span class="params">error</span>) =&gt;</span> &#123;</div><div class="line">		  <span class="built_in">console</span>.error(error);</div><div class="line">		&#125;);</div><div class="line">	<span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>在node下运行的结果：<br><img src="http://ofl0flipo.bkt.clouddn.com/node20170410112425.jpg" alt=""></p>
+<h2 id="6-总结："><a href="#6-总结：" class="headerlink" title="6.总结："></a>6.总结：</h2><p>从上面几个小节综合来看，可以看到Promise其实就是做了一件事情，那就是对异步操作进行了封装，然后可以将异步操作以同步的流程表达出来，避免了层层嵌套的回调函数，同时提供统一的接口，使得控制异步操作更加容易。<br>但是，Promise也有一些缺点:</p>
+<pre><code>* 无法取消Promise，一旦新建它就会立即执行，无法中途取消。
+* 每一个then 方法内部是一个独立的作用域，要是想共享数据，就要将部分数据暴露在最外层，在then 内部赋值一次。
+* 当处于resolved时，无法得知目前进展到哪一个阶段。
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/04/10/重拾nodejs之Promise/" data-id="cj1bovt5k000nz0u71ovj329z" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodeJs/">nodeJs</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/04/07/重拾nodejs之异步编程/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">重拾nodejs之异步编程(二)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodeJs/">nodeJs</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/nodeJs/" style="font-size: 15px;">nodeJs</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/04/10/重拾nodejs之Promise/">重拾nodejs之Promise(三)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/07/重拾nodejs之异步编程/">重拾nodejs之异步编程(二)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/06/重拾nodeJs之exports/">重拾nodeJs之exports(一)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/01/05/JavaScript原型中的哲学思想/">JavaScript原型中的哲学思想</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/26/Javascript数组知识点总结/">Javascript数组知识点总结</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Medca<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/atom.xml" class="mobile-nav-link">rss</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
