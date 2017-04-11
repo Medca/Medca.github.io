@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>重拾nodejs之http(四) | E学</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="http是nodeJs的原生模块，自身就可以用来构建服务器，而且http模块是由C++实现的，性能可靠。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="重拾nodejs之http(四)">
+<meta property="og:url" content="http://yoursite.com/2017/04/11/重拾nodejs之http/index.html">
+<meta property="og:site_name" content="E学">
+<meta property="og:description" content="http是nodeJs的原生模块，自身就可以用来构建服务器，而且http模块是由C++实现的，性能可靠。">
+<meta property="og:image" content="http://ofl0flipo.bkt.clouddn.com/nodejs20170411141540.jpg">
+<meta property="og:image" content="http://ofl0flipo.bkt.clouddn.com/nodejs20170410111510.jpg">
+<meta property="og:image" content="http://ofl0flipo.bkt.clouddn.com/node20170411153513.jpg">
+<meta property="og:image" content="http://ofl0flipo.bkt.clouddn.com/nodejs20170411150055.jpg">
+<meta property="og:updated_time" content="2017-04-11T07:36:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="重拾nodejs之http(四)">
+<meta name="twitter:description" content="http是nodeJs的原生模块，自身就可以用来构建服务器，而且http模块是由C++实现的，性能可靠。">
+<meta name="twitter:image" content="http://ofl0flipo.bkt.clouddn.com/nodejs20170411141540.jpg">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">E学</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/atom.xml">rss</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-重拾nodejs之http" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/11/重拾nodejs之http/" class="article-date">
+  <time datetime="2017-04-11T05:55:07.000Z" itemprop="datePublished">2017-04-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      重拾nodejs之http(四)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="/assets/js/DPlayer.min.js"> </script><script src="/assets/js/APlayer.min.js"> </script><p>http是nodeJs的<strong>原生模块</strong>，自身就可以用来构建服务器，而且http模块是由C++实现的，性能可靠。</p>
+<a id="more"></a>
+<h2 id="1-首先，我们搭建一个简单的http服务器作为开端"><a href="#1-首先，我们搭建一个简单的http服务器作为开端" class="headerlink" title="1. 首先，我们搭建一个简单的http服务器作为开端:"></a>1. 首先，我们搭建一个简单的<strong>http服务器</strong>作为开端:</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//index.js</span></div><div class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">"http"</span>);</div><div class="line"><span class="keyword">var</span> port = <span class="number">3000</span>;</div><div class="line"><span class="keyword">var</span> host = <span class="string">"127.0.0.1"</span>;</div><div class="line">http.createServer(<span class="function"><span class="keyword">function</span>(<span class="params">req,res</span>)</span>&#123;</div><div class="line">    <span class="comment">// res.writeHead(200,&#123;"Content-Type":"text/plain;charset=utf-8"&#125;);</span></div><div class="line">    <span class="comment">// res.end('&lt;h1&gt;http服务器搭建成功&lt;/h1&gt;')</span></div><div class="line">    res.writeHead(<span class="number">200</span>,&#123;<span class="string">"Content-Type"</span>:<span class="string">"text/html;charset=utf-8"</span>&#125;);</div><div class="line">    res.end(<span class="string">'&lt;h1&gt;http服务器搭建成功&lt;/h1&gt;'</span>)</div><div class="line">&#125;).listen(port,host);</div><div class="line"><span class="built_in">console</span>.log(<span class="string">"当前服务器已经打开："</span>+host+<span class="string">"端口是："</span>+port);</div></pre></td></tr></table></figure>
+<p>在控制台输出 node index,打开浏览器访问:127.0.0.1:3000。结果如下：<br><img src="http://ofl0flipo.bkt.clouddn.com/nodejs20170411141540.jpg" alt=""><br>值得注意的是，我这里指定了头部’text/html;’，所以h1标签可以被页面解析。如果指定’text/plain;’则h1标签会当做文本原样输出。<br><img src="http://ofl0flipo.bkt.clouddn.com/nodejs20170410111510.jpg" alt=""></p>
+<h2 id="2-url和querystring"><a href="#2-url和querystring" class="headerlink" title="2.url和querystring"></a>2.url和querystring</h2><h3 id="2-1-url-parse-format-resolve-这个模块专门为URL组成部分解析（域名，IP，参数等）和获取提供。"><a href="#2-1-url-parse-format-resolve-这个模块专门为URL组成部分解析（域名，IP，参数等）和获取提供。" class="headerlink" title="2.1:url:parse()/format/resolve,这个模块专门为URL组成部分解析（域名，IP，参数等）和获取提供。"></a>2.1:url:parse()/format/resolve,这个模块专门为URL组成部分解析（域名，IP，参数等）和获取提供。</h3><h3 id="2-2-querystirng-只为参数的获取和转换，和参数的加密和解密提供"><a href="#2-2-querystirng-只为参数的获取和转换，和参数的加密和解密提供" class="headerlink" title="2.2:querystirng:只为参数的获取和转换，和参数的加密和解密提供"></a>2.2:querystirng:只为参数的获取和转换，和参数的加密和解密提供</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">"http"</span>);</div><div class="line"><span class="keyword">var</span> url = <span class="built_in">require</span>(<span class="string">'url'</span>);</div><div class="line"><span class="keyword">var</span> querystring = <span class="built_in">require</span>(<span class="string">'querystring'</span>)</div><div class="line"></div><div class="line"><span class="keyword">var</span> port = <span class="number">3000</span>;</div><div class="line"><span class="keyword">var</span> host = <span class="string">"127.0.0.1"</span>;</div><div class="line"></div><div class="line">http.createServer(<span class="function"><span class="keyword">function</span>(<span class="params">req,res</span>)</span>&#123;</div><div class="line">    res.writeHead(<span class="number">200</span>,&#123;<span class="string">"Content-Type"</span>:<span class="string">"text/html;charset=utf-8"</span>&#125;);</div><div class="line">    <span class="keyword">var</span> urlJSON = url.parse(req.url)</div><div class="line">    <span class="built_in">console</span>.log(urlJSON)</div><div class="line">    <span class="keyword">var</span> query = urlJSON.query;</div><div class="line">    <span class="keyword">var</span> queryJson = querystring.parse(query);</div><div class="line">    <span class="built_in">console</span>.log(queryJson.username);</div><div class="line">    <span class="built_in">console</span>.log(queryJson.password);</div><div class="line">    res.end()</div><div class="line">&#125;).listen(port,host);</div><div class="line"><span class="built_in">console</span>.log(<span class="string">"当前服务器已经打开："</span>+host+<span class="string">"端口是："</span>+port);</div></pre></td></tr></table></figure>
+<p>在浏览器访问<a href="http://127.0.0.1:3000/?username=med&amp;password=123：" target="_blank" rel="external">http://127.0.0.1:3000/?username=med&amp;password=123：</a><br>!()[<a href="http://ofl0flipo.bkt.clouddn.com/nodejs20170411143122.jpg" target="_blank" rel="external">http://ofl0flipo.bkt.clouddn.com/nodejs20170411143122.jpg</a>]</p>
+<h2 id="3-http-fs的结合使用"><a href="#3-http-fs的结合使用" class="headerlink" title="3. http+fs的结合使用"></a>3. http+fs的结合使用</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">"http"</span>);</div><div class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">"fs"</span>);</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">var</span> port = <span class="number">3000</span>;</div><div class="line"><span class="keyword">var</span> host = <span class="string">"127.0.0.1"</span>;</div><div class="line"><span class="keyword">var</span> root = __dirname;</div><div class="line"></div><div class="line">http.createServer(<span class="function"><span class="keyword">function</span>(<span class="params">req,res</span>)</span>&#123;</div><div class="line">    res.writeHead(<span class="number">200</span>,&#123;<span class="string">"Content-Type"</span>:<span class="string">"text/html;charset=utf-8"</span>&#125;);</div><div class="line">    fs.readFile(root+<span class="string">"/index.html"</span>,<span class="string">'utf-8'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">err,data</span>)</span>&#123;</div><div class="line">        <span class="keyword">if</span>(err)&#123;</div><div class="line">            <span class="keyword">throw</span> err;</div><div class="line">        &#125;</div><div class="line">        <span class="built_in">console</span>.log(data)</div><div class="line">    &#125;);</div><div class="line">    res.end()</div><div class="line">&#125;).listen(port,host);</div><div class="line"><span class="built_in">console</span>.log(<span class="string">"当前服务器已经打开："</span>+host+<span class="string">"端口是："</span>+port);</div></pre></td></tr></table></figure>
+<p>在同级目录下，创建一个index.html,访问浏览器，控制台输出如下<br><img src="http://ofl0flipo.bkt.clouddn.com/node20170411153513.jpg" alt=""></p>
+<h2 id="4-客户端发送请求"><a href="#4-客户端发送请求" class="headerlink" title="4.客户端发送请求"></a>4.客户端发送请求</h2><p>index.js内容如下:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">"http"</span>);</div><div class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">"fs"</span>);</div><div class="line"></div><div class="line"><span class="keyword">var</span> port = <span class="number">3000</span>;</div><div class="line"><span class="keyword">var</span> host = <span class="string">"127.0.0.1"</span>;</div><div class="line"><span class="keyword">var</span> root = __dirname;</div><div class="line"></div><div class="line">http.createServer(<span class="function"><span class="keyword">function</span>(<span class="params">req,res</span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> json = &#123;<span class="string">"username"</span>:<span class="string">"keke"</span>,<span class="string">"password"</span>:<span class="string">"123456"</span>&#125;;</div><div class="line">    <span class="comment">// 解决跨域问题</span></div><div class="line">    res.setHeader(<span class="string">"Access-Control-Allow-Origin"</span>, <span class="string">"*"</span>);</div><div class="line">    res.setHeader(<span class="string">"Access-Control-Allow-Headers"</span>, <span class="string">"X-Requested-With"</span>);</div><div class="line">    res.setHeader(<span class="string">"Access-Control-Allow-Methods"</span>,<span class="string">"PUT,POST,GET,DELETE,OPTIONS"</span>);</div><div class="line">    res.setHeader(<span class="string">"X-Powered-By"</span>,<span class="string">' 3.2.1'</span>);</div><div class="line">    res.setHeader(<span class="string">"Content-Type"</span>, <span class="string">"application/json;charset=utf-8"</span>);</div><div class="line"></div><div class="line">    res.end(<span class="built_in">JSON</span>.stringify(json));</div><div class="line">&#125;).listen(port,host);</div><div class="line"><span class="built_in">console</span>.log(<span class="string">"当前服务器已经打开："</span>+host+<span class="string">"端口是："</span>+port);</div></pre></td></tr></table></figure></p>
+<p>index.html内容如下:<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width, initial-scale=1.0"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"X-UA-Compatible"</span> <span class="attr">content</span>=<span class="string">"ie=edge"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">onclick</span>=<span class="string">"send();"</span>&gt;</span>click<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></div><div class="line">        <span class="function"><span class="keyword">function</span> <span class="title">send</span>(<span class="params"></span>)</span>&#123;</div><div class="line">            <span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</div><div class="line">            xhr.open(<span class="string">"get"</span>,<span class="string">"http://127.0.0.1:3000/"</span>);</div><div class="line">            xhr.onreadystatechange = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">                <span class="keyword">if</span>(<span class="keyword">this</span>.status==<span class="number">200</span> &amp;&amp; <span class="keyword">this</span>.readyState==<span class="number">4</span>)&#123;</div><div class="line">                    <span class="keyword">var</span> json = <span class="built_in">JSON</span>.parse(<span class="keyword">this</span>.responseText);</div><div class="line">                    <span class="built_in">console</span>.log(json.username+<span class="string">"=="</span>+json.password);</div><div class="line">                &#125;</div><div class="line">            &#125;;</div><div class="line">            xhr.send();</div><div class="line">        &#125;</div><div class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>重启js文件,并访问index.html点击按钮，客户端输出内容如下:<br><img src="http://ofl0flipo.bkt.clouddn.com/nodejs20170411150055.jpg" alt=""><br>在本地下访问会有<strong>跨域</strong>问题，所以加上一段代码解决。顺便提一下，writeHeader()里面调用的还是setHeader()，至于两者区别，我就不说了。</p>
+<h2 id="5-总结：通过本篇的学习可以用node搭建一个简单的http服务器。"><a href="#5-总结：通过本篇的学习可以用node搭建一个简单的http服务器。" class="headerlink" title="5. 总结：通过本篇的学习可以用node搭建一个简单的http服务器。"></a>5. 总结：通过本篇的学习可以用node搭建一个简单的http服务器。</h2>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/04/11/重拾nodejs之http/" data-id="cj1d8u0vw000qc4u7b59tqw6n" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodeJs/">nodeJs</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/04/10/重拾nodejs之Promise/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">重拾nodejs之Promise(三)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodeJs/">nodeJs</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/nodeJs/" style="font-size: 15px;">nodeJs</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/04/11/重拾nodejs之http/">重拾nodejs之http(四)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/10/重拾nodejs之Promise/">重拾nodejs之Promise(三)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/07/重拾nodejs之异步编程/">重拾nodejs之异步编程(二)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/06/重拾nodeJs之exports/">重拾nodeJs之exports(一)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/01/05/JavaScript原型中的哲学思想/">JavaScript原型中的哲学思想</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Medca<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/atom.xml" class="mobile-nav-link">rss</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
